@@ -6,12 +6,10 @@ defineProps({
 });
 
 const emit = defineEmits(["addToFavorite", "addToCart"]);
-
-function onClickAdd() {}
 </script>
 
 <template>
-  <div class="grid">
+  <div class="grid" v-auto-animate>
     <Card
       v-for="item in items"
       :key="item.id"

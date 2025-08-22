@@ -8,22 +8,26 @@ defineProps({
 
 <template>
   <header class="header">
-    <div class="header__left">
-      <img src="/logo.png" alt="Logo" width="40" height="40" />
-      <div class="header__text">
-        <h2 class="header__title">Vue Sneakers</h2>
-        <p class="header__description">Магазин лучших кроссовок</p>
+    <router-link to="/">
+      <div class="header__left">
+        <img src="/logo.png" alt="Logo" width="40" height="40" />
+        <div class="header__text">
+          <h2 class="header__title">Vue Sneakers</h2>
+          <p class="header__description">Магазин лучших кроссовок</p>
+        </div>
       </div>
-    </div>
+    </router-link>
     <ul class="nav">
       <li @click="() => emit('openDrawer')" class="nav__item">
         <img src="/cart.svg" alt="Cart" />
         <span class="cart">{{ totalPrice }} руб.</span>
       </li>
-      <li class="nav__item">
-        <img src="/heart.svg" alt="Heart" />
-        <span>Закладки</span>
-      </li>
+      <router-link to="/favorites">
+        <li class="nav__item">
+          <img src="/heart.svg" alt="Heart" />
+          <span>Закладки</span>
+        </li>
+      </router-link>
       <li class="nav__item">
         <img src="/profile.svg" alt="Profile" />
         <span>Профиль</span>
