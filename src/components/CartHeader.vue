@@ -1,5 +1,11 @@
+<script setup>
+import { inject } from "vue";
+
+const { closeDrawer } = inject("cart");
+</script>
+
 <template>
-  <div class="cart__header">
+  <div class="cart__header" @click="closeDrawer">
     <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M1 7H14.7143" stroke="" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
       <path

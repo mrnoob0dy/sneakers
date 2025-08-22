@@ -1,26 +1,45 @@
 <script setup>
 import CartHeader from "./CartHeader.vue";
 import CartListItem from "./CartListItem.vue";
+import InfoBlock from "./InfoBlock.vue";
+
+const emit = defineEmits(["createOrder"]);
+
+defineProps({
+  totalPrice: Number,
+  vatPrice: Number,
+  cartButtonDisabled: Boolean,
+});
 </script>
 
 <template>
   <div class="drawer"></div>
   <div class="cart">
     <CartHeader />
+
+    <InfoBlock
+      v-if="!totalPrice"
+      title="Корзина пустая"
+      description="Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."
+      img-url="/package-icon.png"
+    />
+
     <CartListItem />
 
-    <div class="cart__info">
+    <div v-if="totalPrice" class="cart__info">
       <div class="cart__info-item">
         <span class="cart__info-title">Итого:</span>
         <div class="cart__info-border"></div>
-        <span class="cart__info-total">21 498 руб.</span>
+        <span class="cart__info-total">{{ totalPrice }} руб.</span>
       </div>
       <div class="cart__info-item">
         <span class="cart__info-title">Налог 5%:</span>
         <div class="cart__info-border"></div>
-        <span class="cart__info-tax">1074 руб.</span>
+        <span class="cart__info-tax">{{ vatPrice }} руб.</span>
       </div>
-      <button disabled class="cart__info-btn">Оформить заказ</button>
+      <button @click="() => emit('createOrder')" :disabled="cartButtonDisabled" class="cart__info-btn">
+        Оформить заказ
+      </button>
     </div>
   </div>
 </template>

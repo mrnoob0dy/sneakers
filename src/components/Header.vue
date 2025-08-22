@@ -1,3 +1,11 @@
+<script setup>
+const emit = defineEmits(["openDrawer"]);
+
+defineProps({
+  totalPrice: Number,
+});
+</script>
+
 <template>
   <header class="header">
     <div class="header__left">
@@ -8,9 +16,9 @@
       </div>
     </div>
     <ul class="nav">
-      <li class="nav__item">
+      <li @click="() => emit('openDrawer')" class="nav__item">
         <img src="/cart.svg" alt="Cart" />
-        <span class="cart">1205 руб.</span>
+        <span class="cart">{{ totalPrice }} руб.</span>
       </li>
       <li class="nav__item">
         <img src="/heart.svg" alt="Heart" />

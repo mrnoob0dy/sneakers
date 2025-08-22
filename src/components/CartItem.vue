@@ -1,12 +1,23 @@
+<script setup>
+const emit = defineEmits(["onClickRemove"]);
+
+defineProps({
+  id: Number,
+  imageUrl: String,
+  title: String,
+  price: Number,
+});
+</script>
+
 <template>
   <div class="cart__item">
-    <img src="/sneakers/sneakers-1.jpg" alt="Мужские Кроссовки Nike Blazer Mid Suede" class="cart__item-img" />
+    <img :src="imageUrl" :alt="title" class="cart__item-img" />
     <div class="cart__item-text">
-      <h3 class="cart__item-title">Мужские Кроссовки Nike Blazer Mid Suede</h3>
-      <span class="cart__item-price">12 999 руб.</span>
+      <h3 class="cart__item-title">{{ title }}</h3>
+      <span class="cart__item-price">{{ price }} руб.</span>
     </div>
     <button class="cart__item-btn">
-      <img src="/close.svg" alt="Close" />
+      <img @click="() => emit('onClickRemove')" src="/close.svg" alt="Close" />
     </button>
   </div>
 </template>
