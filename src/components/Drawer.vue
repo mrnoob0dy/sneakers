@@ -1,15 +1,38 @@
 <script setup>
+import { computed, inject, ref } from "vue";
 import CartHeader from "./CartHeader.vue";
 import CartListItem from "./CartListItem.vue";
 import InfoBlock from "./InfoBlock.vue";
+import axios from "axios";
 
-const emit = defineEmits(["createOrder"]);
+const { cartItems, closeDrawer } = inject("cart");
+const isCreating = ref(false);
+const orderId = ref(null);
 
-defineProps({
+const cartIsEmpty = computed(() => cartItems.value.length === 0);
+const cartButtonDisabled = computed(() => isCreating.value || cartIsEmpty.value);
+
+const props = defineProps({
   totalPrice: Number,
   vatPrice: Number,
-  cartButtonDisabled: Boolean,
 });
+
+const createOrder = async () => {
+  try {
+    isCreating.value = true;
+    const { data } = await axios.post("https://8bfe6208b79548d9.mokky.dev/orders", {
+      items: cartItems.value,
+      totalPrice: props.totalPrice.value,
+    });
+    cartItems.value = [];
+    orderId.value = data.id;
+    return data;
+  } catch (error) {
+    console.log(error);
+  } finally {
+    isCreating.value = false;
+  }
+};
 </script>
 
 <template>
@@ -18,7 +41,13 @@ defineProps({
     <CartHeader />
 
     <InfoBlock
-      v-if="!totalPrice"
+      v-if="orderId"
+      title="Заказ оформлен!"
+      :description="`Ваш заказ #${orderId} скоро будет передан курьерской доставке`"
+      img-url="/order-success-icon.png"
+    />
+    <InfoBlock
+      v-if="!totalPrice && !orderId"
       title="Корзина пустая"
       description="Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."
       img-url="/package-icon.png"
@@ -37,9 +66,7 @@ defineProps({
         <div class="cart__info-border"></div>
         <span class="cart__info-tax">{{ vatPrice }} руб.</span>
       </div>
-      <button @click="() => emit('createOrder')" :disabled="cartButtonDisabled" class="cart__info-btn">
-        Оформить заказ
-      </button>
+      <button @click="createOrder" :disabled="cartButtonDisabled" class="cart__info-btn">Оформить заказ</button>
     </div>
   </div>
 </template>

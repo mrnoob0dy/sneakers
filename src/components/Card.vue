@@ -14,7 +14,13 @@ defineProps({
 <template>
   <div class="card">
     <div class="card__images">
-      <img class="card__like" @click="onClickFavorite" :src="isFavorite ? '/like-2.svg' : '/like-1.svg'" alt="Like" />
+      <img
+        v-if="onClickFavorite"
+        class="card__like"
+        @click="onClickFavorite"
+        :src="isFavorite ? '/like-2.svg' : '/like-1.svg'"
+        alt="Like"
+      />
       <img class="card__sneaker" :src="imageUrl" :alt="title" />
     </div>
     <div class="card__text">
@@ -24,7 +30,7 @@ defineProps({
           <span class="card__price-text">Цена:</span>
           <span class="card__price-price">{{ price }} руб.</span>
         </div>
-        <button @click="onClickAdd" class="card__price-btn">
+        <button v-if="onClickAdd" @click="onClickAdd" class="card__price-btn">
           <img :src="isAdded ? '/checked.svg' : '/plus.svg'" alt="Add to cart" />
         </button>
       </div>
@@ -32,7 +38,7 @@ defineProps({
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .card {
   max-width: 210px;
   width: 100%;
